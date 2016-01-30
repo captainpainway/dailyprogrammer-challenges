@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>The Dottie number</title>
+<link rel="stylesheet" type="text/css" href="dotnum.css">
+</head>
+
+<body>
+
+	<div id="wrapper">
+		<form id="dottie">
+			<h1>Type a number</h1><input type="number" name="value" id="value" />
+			<input type="button" value="Submit" id="button" onclick="getNumber()"; return false; />
+		</form>
+
+		<div>The Dottie number for <span id="original">___</span> is <span id="result">___</span>.</div>
+
+		<p class="left">The Dottie number is the number you get when you type any number into a scientific calculator and then repeatedly press the cosine button, with the calculator set to radians. The number displayed updates, getting closer and closer to a certain number, and eventually stops changing.</p>
+
+		<p><a href="https://www.reddit.com/r/dailyprogrammer/comments/3i99w8/20150824_challenge_229_easy_the_dottie_number/">Daily Programmer Challenge #229</a></p>
+	</div>
+
+	<script type="text/javascript" src="dotnum.js"></script>
+
+</body>
+
+</html>

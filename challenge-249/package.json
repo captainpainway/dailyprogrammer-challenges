@@ -1,0 +1,16 @@
+{
+  "name": "challenge-249",
+  "version": "1.0.0",
+  "main": "index.js",
+  "dependencies": {
+    "babel-cli": "^6.4.5"
+  },
+  "devDependencies": {
+    "babel-preset-es2015": "^6.3.13"
+  },
+  "scripts": {
+    "build": "babel index.js -o build.js"
+  },
+  "author": "",
+  "license": "ISC"
+}
