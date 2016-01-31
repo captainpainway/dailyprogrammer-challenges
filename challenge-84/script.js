@@ -2,45 +2,85 @@
 
 let div = document.createElement('div');
 let main = document.getElementById('text');
-let distance = locations();
+let player = {};
+let treasure = {};
 
 document.onload = greeting();
 
-function locations() {
-    let player = {};
-    let treasure = {};
-    player.x = Math.round(Math.random() * 100);
-    player.y = Math.round(Math.random() * 100);
-    treasure.x = Math.round(Math.random() * 100);
-    treasure.y = Math.round(Math.random() * 100);
-    let distance = Math.round(Math.sqrt(Math.pow(treasure.x - player.x,2) + Math.pow(treasure.y - player.y,2)));
-    console.log(player);
-    console.log(treasure);
-    console.log(distance);
-    return distance; 
+let distance = distCalc(player.x, player.y, treasure.x, treasure.y);
+
+document.onkeydown = (event => {
+    if(event.keyCode === 13) {
+        returnCommand();
+    }
+});
+
+function movePlayer(x, y) {
+    player.x += x;
+    player.y += y;
+    distance = distCalc(player.x, player.y, treasure.x, treasure.y);
 }
 
-function input() {
-    let commands = document.createElement('input');
-    commands.setAttribute('id', 'commands');
-    commands.setAttribute('type', 'text');
-    commands.setAttribute('onKeyUp', 'returnCommand()');
-    return commands;
+function distCalc(px, py, tx, ty) {
+    let distance = Math.sqrt(Math.pow(tx - px,2) + Math.pow(ty - py,2)).toFixed(2);
+    return distance;
+}
+
+function locations() {
+    player.x = Math.round(Math.random() * 10);
+    player.y = Math.round(Math.random() * 10);
+    treasure.x = Math.round(Math.random() * 10);
+    treasure.y = Math.round(Math.random() * 10);
+    let distance = distCalc(player.x, player.y, treasure.x, treasure.y);
+    if(distance == 0) locations();
 }
 
 function greeting() {
-    let commands = input();
-    let greet = document.createTextNode('You find yourself in the middle of the desert. Try "look".');
-    div.appendChild(greet);
+    div.innerHTML = 'You find yourself in the middle of the desert. Try "look".'
     main.parentNode.insertBefore(commands, main.nextSibling);
     main.appendChild(div);
+    commands.focus();
+    locations();
 }
 
 function returnCommand() {
     let textArea = document.getElementById('commands');
-    if(textArea.value == 'look'){
+    if(/\blook\b/gi.test(textArea.value)){
         div.innerHTML = 'You look down and are holding a strange device with numbers that read '+distance+'. In which direction will you go? N/S/E/W';
         textArea.value = '';
+    }else{
+        move(textArea);
+        if(distance == 0){
+            div.innerHTML = 'You did it! You found the treasure!';
+        }
     }
 }
 
+function move(textArea) {
+    switch(true) {
+        case /\bnorth\b|\bn\b/gi.test(textArea.value):
+            movePlayer(0, 1);
+            div.innerHTML = "You went north. The device now says "+distance+". Where would you like to go? N/S/E/W";
+            textArea.value = '';
+            break;
+        case /\bwest\b|\bw\b/gi.test(textArea.value):
+            movePlayer(-1, 0);
+            div.innerHTML = "You went west. The device now says "+distance+". Where would you like to go? N/S/E/W";
+            textArea.value = '';
+            break;
+        case /\beast\b|\be\b/gi.test(textArea.value):
+            movePlayer(1, 0);
+            div.innerHTML = "You went east. The device now says "+distance+". Where would you like to go? N/S/E/W";
+            textArea.value = '';
+            break;
+        case /\bsouth\b|\bs\b/gi.test(textArea.value):
+            movePlayer(0, -1);
+            div.innerHTML = "You went south. The device now says "+distance+". Where would you like to go? N/S/E/W";
+            textArea.value = '';
+            break;
+        default:
+            div.innerHTML = "That's not a valid move. N/S/E/W";
+            textArea.value = '';
+            break;
+    }
+}
