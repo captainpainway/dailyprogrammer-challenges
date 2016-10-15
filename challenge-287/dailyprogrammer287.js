@@ -9,7 +9,7 @@ function toArray(num) {
 }
 
 function largest_digit(num) {
-    return Math.max.apply(null, toArray(num));
+    return Math.max(...toArray(num));
 }
 
 function desc_digits(num) {
